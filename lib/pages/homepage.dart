@@ -1,5 +1,8 @@
-import 'package:car_app/Constants/Colors.dart';
+import 'package:car_app/Constants/colors.dart';
 import 'package:flutter/material.dart';
+
+import '../Components/productCard.dart';
+import '../data/CarDummyData.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: Colors.grey[400],
+                      color: Colors.grey[600],
                     ),
                   ),
                   const SizedBox(
@@ -91,16 +94,13 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body:   SafeArea(
+      body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 8,
-              ) ,
               const Text(
                 'Categories',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
@@ -125,15 +125,15 @@ class _HomePageState extends State<HomePage> {
                         child: Chip(
                           backgroundColor: selectedFilter == filter
                               ? pageBlack
-                              : const Color.fromRGBO(245, 247, 249, 1),
+                              : const Color.fromRGBO(245, 248, 248, 1),
                           side: const BorderSide(
-                            color: Color.fromRGBO(245, 247, 249, 1),
+                            color: Color.fromRGBO(245, 248, 248, 1),
                           ),
                           label: Text(filter ,
                           style: TextStyle(
                             color: selectedFilter == filter
                                 ? pageBackground
-                                : Colors.grey[400],
+                                : Colors.grey[600],
                           ),
                           ),
                           labelStyle: const TextStyle(
@@ -152,6 +152,78 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
+              const SizedBox(
+                height: 8,
+              ) ,
+              Text(
+                'Popular Cars',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 740) {
+                  return GridView.builder(
+                    itemCount: products.length,
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.75,
+                    ),
+                    itemBuilder: (context, index) {
+                      final product = products[index];
+                      return GestureDetector(
+                        onTap: () {
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return ProductDetailsPage(product: product);
+                          //     },
+                          //   ),
+                          // );
+                        },
+                        child: ProductCard(
+                          title: product['title'] as String,
+                          price: product['price'] as int,
+                          image: product['imageUrl'] as String,
+                          backgroundColor: index.isEven
+                              ? const Color.fromRGBO(216, 240, 253, 1)
+                              : const Color.fromRGBO(245, 247, 249, 1),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      final product = products[index];
+                      return GestureDetector(
+                        onTap: () {
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return ProductDetailsPage(product: product);
+                          //     },
+                          //   ),
+                          // );
+                        },
+                        child: ProductCard(
+                          title: product['title'] as String,
+                          price: product['price'] as int,
+                          image: product['imageUrl'] as String,
+                          backgroundColor:  const Color.fromRGBO(245, 248, 248, 1) ,
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ),
             ],
           ),
         ),
