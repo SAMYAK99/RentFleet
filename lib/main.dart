@@ -1,3 +1,5 @@
+import 'package:car_app/pages/carDetailsScreen.dart';
+import 'package:car_app/pages/intropage.dart';
 import 'package:flutter/material.dart';
 
 import 'Pages/homepage.dart';
@@ -53,7 +55,7 @@ class MyApp extends StatelessWidget {
 
         ),
       ),
-      home: const HomePage(),
+      home: const CarDetails(),
       debugShowCheckedModeBanner: false,
     );
   }
