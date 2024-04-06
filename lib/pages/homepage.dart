@@ -1,4 +1,5 @@
 import 'package:car_app/Constants/colors.dart';
+import 'package:car_app/pages/carDetailsScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../Components/productCard.dart';
@@ -177,13 +178,13 @@ class _HomePageState extends State<HomePage> {
                       final product = products[index];
                       return GestureDetector(
                         onTap: () {
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return ProductDetailsPage(product: product);
-                          //     },
-                          //   ),
-                          // );
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => CarDetails(
+                                product: product,
+                              ),
+                            ),
+                          );
                         },
                         child: ProductCard(
                           title: product['title'] as String,
@@ -203,13 +204,13 @@ class _HomePageState extends State<HomePage> {
                       final product = products[index];
                       return GestureDetector(
                         onTap: () {
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return ProductDetailsPage(product: product);
-                          //     },
-                          //   ),
-                          // );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CarDetails(
+                                product: product,
+                              ),
+                            ),
+                          );
                         },
                         child: ProductCard(
                           title: product['title'] as String,

@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
             fontSize: 20,
           ),
           bodyLarge: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 22,
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
           ),
           bodySmall: TextStyle(
             fontWeight: FontWeight.w300,
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
 
         ),
       ),
-      home: const CarDetails(),
+      home: const HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -54,10 +54,13 @@ class ProductCard extends StatelessWidget {
               )
             ],
           ) ,
-          Center(
-            child: Image.asset(
-              image,
-              fit: BoxFit.fill,
+          Hero(
+            tag: 'hero',
+            child: Center(
+              child: Image.asset(
+                image,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           Row(
