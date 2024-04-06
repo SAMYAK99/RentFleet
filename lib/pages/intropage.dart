@@ -57,13 +57,13 @@ class IntroPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 56,
                 ),
-                Image(
+                const Image(
                   image: AssetImage('assets/images/car5.png'),
                 ),
-                Spacer(
+                const Spacer(
                   flex: 1,
                 ),
                 Padding(

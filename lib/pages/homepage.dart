@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     );
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         titleSpacing: 0,
         title: Padding(
           padding: const EdgeInsets.only(left: 8.0),
@@ -95,137 +96,142 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Text(
-                'Categories',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-              ),
-              SizedBox(
-                height: 80,
-                child: ListView.builder(
-                  itemCount: filters.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    final filter = filters[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4.0,
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedFilter = filter;
-                          });
-                        },
-                        child: Chip(
-                          backgroundColor: selectedFilter == filter
-                              ? pageBlack
-                              : const Color.fromRGBO(245, 248, 248, 1),
-                          side: const BorderSide(
-                            color: Color.fromRGBO(245, 248, 248, 1),
-                          ),
-                          label: Text(filter ,
-                          style: TextStyle(
-                            color: selectedFilter == filter
-                                ? pageBackground
-                                : Colors.grey[600],
-                          ),
-                          ),
-                          labelStyle: const TextStyle(
-                            fontSize: 16,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+      body: SingleChildScrollView(
+        physics: const ScrollPhysics(),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Text(
+                  'Categories',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                ),
+                SizedBox(
+                  height: 80,
+                  child: ListView.builder(
+                    itemCount: filters.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final filter = filters[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4.0,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedFilter = filter;
+                            });
+                          },
+                          child: Chip(
+                            backgroundColor: selectedFilter == filter
+                                ? pageBlack
+                                : const Color.fromRGBO(245, 248, 248, 1),
+                            side: const BorderSide(
+                              color: Color.fromRGBO(245, 248, 248, 1),
+                            ),
+                            label: Text(filter ,
+                            style: TextStyle(
+                              color: selectedFilter == filter
+                                  ? pageBackground
+                                  : Colors.grey[600],
+                            ),
+                            ),
+                            labelStyle: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
                           ),
                         ),
-                      ),
-                    );
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ) ,
+                Text(
+                  'Popular Cars',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth > 740) {
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: products.length,
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.75,
+                        ),
+                        itemBuilder: (context, index) {
+                          final product = products[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => CarDetails(
+                                    product: product,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ProductCard(
+                              title: product['title'] as String,
+                              price: product['price'] as int,
+                              image: product['imageUrl'] as String,
+                              backgroundColor: index.isEven
+                                  ? const Color.fromRGBO(216, 240, 253, 1)
+                                  : const Color.fromRGBO(245, 247, 249, 1),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: products.length,
+                        itemBuilder: (context, index) {
+                          final product = products[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => CarDetails(
+                                    product: product,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ProductCard(
+                              title: product['title'] as String,
+                              price: product['price'] as int,
+                              image: product['imageUrl'] as String,
+                              backgroundColor:  const Color.fromRGBO(245, 248, 248, 1) ,
+                            ),
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
-              ),
-              const SizedBox(
-                height: 8,
-              ) ,
-              Text(
-                'Popular Cars',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                if (constraints.maxWidth > 740) {
-                  return GridView.builder(
-                    itemCount: products.length,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1.75,
-                    ),
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => CarDetails(
-                                product: product,
-                              ),
-                            ),
-                          );
-                        },
-                        child: ProductCard(
-                          title: product['title'] as String,
-                          price: product['price'] as int,
-                          image: product['imageUrl'] as String,
-                          backgroundColor: index.isEven
-                              ? const Color.fromRGBO(216, 240, 253, 1)
-                              : const Color.fromRGBO(245, 247, 249, 1),
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => CarDetails(
-                                product: product,
-                              ),
-                            ),
-                          );
-                        },
-                        child: ProductCard(
-                          title: product['title'] as String,
-                          price: product['price'] as int,
-                          image: product['imageUrl'] as String,
-                          backgroundColor:  const Color.fromRGBO(245, 248, 248, 1) ,
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
+              ],
             ),
-          ),
-            ],
           ),
         ),
       ),

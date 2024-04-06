@@ -22,6 +22,7 @@ class _CarDetailsState extends State<CarDetails> {
     return Scaffold(
       backgroundColor: pageBackground,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: pageBackground,
         leading: Padding(
           padding: const EdgeInsets.only(left: 8.0),
