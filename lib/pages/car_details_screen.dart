@@ -1,9 +1,10 @@
 import 'package:action_slider/action_slider.dart';
 import 'package:car_app/Constants/colors.dart';
+import 'package:car_app/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CarDetails extends StatefulWidget {
-
   final Map<String, Object> product;
 
   const CarDetails({
@@ -11,12 +12,16 @@ class CarDetails extends StatefulWidget {
     required this.product,
   });
 
-
   @override
   State<CarDetails> createState() => _CarDetailsState();
 }
 
 class _CarDetailsState extends State<CarDetails> {
+  void onAddToCartClick() {
+    Provider.of<CartProvider>(context, listen: false)
+        .addProduct(widget.product);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +69,7 @@ class _CarDetailsState extends State<CarDetails> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar:   Padding(
+      bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ActionSlider.standard(
           toggleColor: bluePrimary,
@@ -79,12 +84,9 @@ class _CarDetailsState extends State<CarDetails> {
           ),
           rolling: true,
           action: (controller) async {
+            onAddToCartClick();
             controller.loading();
-            // Navigator.of(context).pushReplacement(
-            //   MaterialPageRoute(
-            //     builder: (context) => const HomePage(),
-            //   ),
-            // );
+            Navigator.of(context).pop();
           }, //many more parameters
         ),
       ),
@@ -107,13 +109,10 @@ class _CarDetailsState extends State<CarDetails> {
                   ]),
             ),
             const SizedBox(height: 24),
-            Hero(
-              tag: 'car',
-              child: Center(
-                child: Image.asset(
-                  widget.product['imageUrl'] as String,
-                  fit: BoxFit.fill,
-                ),
+            Center(
+              child: Image.asset(
+                widget.product['imageUrl'] as String,
+                fit: BoxFit.fill,
               ),
             ),
             const SizedBox(height: 24),
@@ -140,10 +139,12 @@ class _CarDetailsState extends State<CarDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ItemCard(
-                          Icons.local_gas_station, 'Fuel', 'L', widget.product['fuel'] as double, context),
-                      ItemCard(Icons.speed, 'Top Speed', 'mph', widget.product['topSpeed'] as double, context),
-                      ItemCard(Icons.people, 'Capacity', 'seats', widget.product['capacity'] as String, context),
+                      ItemCard(Icons.local_gas_station, 'Fuel', 'L',
+                          widget.product['fuel'] as double, context),
+                      ItemCard(Icons.speed, 'Top Speed', 'mph',
+                          widget.product['topSpeed'] as double, context),
+                      ItemCard(Icons.people, 'Capacity', 'seats',
+                          widget.product['capacity'] as String, context),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -155,7 +156,7 @@ class _CarDetailsState extends State<CarDetails> {
                     height: 16,
                   ),
                   Container(
-                    width: double.infinity,
+                      width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.grey[100],
                         borderRadius: BorderRadius.circular(20),

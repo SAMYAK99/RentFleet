@@ -1,9 +1,9 @@
 import 'package:car_app/Constants/colors.dart';
-import 'package:car_app/pages/carDetailsScreen.dart';
+import 'package:car_app/pages/car_details_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../Components/productCard.dart';
-import '../data/CarDummyData.dart';
+import '../Components/product_card.dart';
+import '../data/car_dummy_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -194,6 +194,8 @@ class _HomePageState extends State<HomePage> {
                               title: product['title'] as String,
                               price: product['price'] as int,
                               image: product['imageUrl'] as String,
+                              fuel: product['fuel'] as double,
+                              capacity: product['capacity'] as String,
                               backgroundColor: index.isEven
                                   ? const Color.fromRGBO(216, 240, 253, 1)
                                   : const Color.fromRGBO(245, 247, 249, 1),
@@ -220,8 +222,10 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: ProductCard(
                               title: product['title'] as String,
-                              price: product['price'] as int,
                               image: product['imageUrl'] as String,
+                              fuel: product['fuel'] as double,
+                              price: product['price'] as int,
+                              capacity: product['capacity'] as String,
                               backgroundColor:  const Color.fromRGBO(245, 248, 248, 1) ,
                             ),
                           );

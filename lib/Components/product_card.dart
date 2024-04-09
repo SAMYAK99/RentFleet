@@ -5,13 +5,17 @@ class ProductCard extends StatelessWidget {
   final int price;
   final String image;
   final Color backgroundColor;
+  final String capacity;
+  final double fuel ;
 
   const ProductCard({
     super.key,
     required this.title,
-    required this.price,
     required this.image,
     required this.backgroundColor,
+    required this.capacity,
+    required this.fuel,
+    required this.price,
   });
 
   @override
@@ -54,13 +58,10 @@ class ProductCard extends StatelessWidget {
               )
             ],
           ) ,
-          Hero(
-            tag: 'hero',
-            child: Center(
-              child: Image.asset(
-                image,
-                fit: BoxFit.fill,
-              ),
+          Center(
+            child: Image.asset(
+              image,
+              fit: BoxFit.fill,
             ),
           ),
           Row(
@@ -74,13 +75,13 @@ class ProductCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: Row(
                   children: [
-                    const Icon(Icons.card_travel_outlined,
+                    const Icon(Icons.local_gas_station,
                       size: 20,
                       color: Colors.grey,
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      '4.5',
+                      fuel.toString(),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -106,7 +107,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      '4',
+                      capacity,
                       style: Theme
                           .of(context)
                           .textTheme
@@ -119,7 +120,7 @@ class ProductCard extends StatelessWidget {
                 flex: 1,
               ),
               Text(
-                "\$120/day",
+                "\$ $price/day",
                 style: Theme
                     .of(context)
                     .textTheme
