@@ -20,6 +20,14 @@ class _CarDetailsState extends State<CarDetails> {
   void onAddToCartClick() {
     Provider.of<CartProvider>(context, listen: false)
         .addProduct(widget.product);
+    if(Provider.of<CartProvider>(context, listen: false).cart.isNotEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Added to cart'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   @override
@@ -70,7 +78,7 @@ class _CarDetailsState extends State<CarDetails> {
         centerTitle: true,
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 32 , vertical:  16.0),
         child: ActionSlider.standard(
           toggleColor: bluePrimary,
           backgroundColor: pageBlack,

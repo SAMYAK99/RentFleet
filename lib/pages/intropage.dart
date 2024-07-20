@@ -1,4 +1,5 @@
 import 'package:action_slider/action_slider.dart';
+import 'package:car_app/Components/navigation_menu.dart';
 import 'package:car_app/constants/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -67,7 +68,7 @@ class IntroPage extends StatelessWidget {
                   flex: 1,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 32 , vertical:  16.0),
                   child: ActionSlider.standard(
                     toggleColor: bluePrimary,
                     backgroundColor: pageBlack,
@@ -84,7 +85,7 @@ class IntroPage extends StatelessWidget {
                       controller.loading();
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) => const HomePage(),
+                          builder: (context) => const NavigationMenu(),
                         ),
                       );
                     }, //many more parameters
