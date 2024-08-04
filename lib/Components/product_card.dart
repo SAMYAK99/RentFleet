@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
@@ -6,7 +7,7 @@ class ProductCard extends StatelessWidget {
   final String image;
   final Color backgroundColor;
   final String capacity;
-  final double fuel ;
+  final int fuel ;
 
   const ProductCard({
     super.key,
@@ -59,9 +60,11 @@ class ProductCard extends StatelessWidget {
             ],
           ) ,
           Center(
-            child: Image.asset(
-              image,
+            child: CachedNetworkImage(
+              imageUrl: image,
               fit: BoxFit.fill,
+              errorWidget: (context, url, error) =>  Image.network('https://www.nicepng.com/png/detail/777-7772737_car-placeholder-image-lamborghini-gallardo.png'),
+              placeholder: (context, url) => Image.network('https://www.nicepng.com/png/detail/777-7772737_car-placeholder-image-lamborghini-gallardo.png'),
             ),
           ),
           Row(

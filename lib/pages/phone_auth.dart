@@ -89,7 +89,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                         child: TextField(
                           controller: phoneController,
                           keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: "Phone",
                           ),

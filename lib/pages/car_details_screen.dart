@@ -1,4 +1,5 @@
 import 'package:action_slider/action_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_app/Constants/colors.dart';
 import 'package:car_app/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
@@ -118,9 +119,11 @@ class _CarDetailsState extends State<CarDetails> {
             ),
             const SizedBox(height: 24),
             Center(
-              child: Image.asset(
-                widget.product['imageUrl'] as String,
+              child: CachedNetworkImage(
+                imageUrl: widget.product['imageUrl'] as String,
                 fit: BoxFit.fill,
+                errorWidget: (context, url, error) =>  Image.network('https://www.nicepng.com/png/detail/777-7772737_car-placeholder-image-lamborghini-gallardo.png'),
+                placeholder: (context, url) => Image.network('https://www.nicepng.com/png/detail/777-7772737_car-placeholder-image-lamborghini-gallardo.png'),
               ),
             ),
             const SizedBox(height: 24),
@@ -148,9 +151,9 @@ class _CarDetailsState extends State<CarDetails> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ItemCard(Icons.local_gas_station, 'Fuel', 'L',
-                          widget.product['fuel'] as double, context),
+                          widget.product['fuel'] as int, context),
                       ItemCard(Icons.speed, 'Top Speed', 'mph',
-                          widget.product['topSpeed'] as double, context),
+                          widget.product['topSpeed'] as int, context),
                       ItemCard(Icons.people, 'Capacity', 'seats',
                           widget.product['capacity'] as String, context),
                     ],

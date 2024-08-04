@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -63,11 +64,15 @@ class _CartPageState extends State<CartPage> {
                     ),
                     child: Row(
                       children: [
-                        Image.asset(
-                          product['imageUrl'],
+                        CachedNetworkImage(
+                          imageUrl: product['imageUrl'],
                           width: 85,
                           height: 60,
                           fit: BoxFit.fill,
+                          errorWidget: (context, url, error) => Image.network(
+                              'https://www.nicepng.com/png/detail/777-7772737_car-placeholder-image-lamborghini-gallardo.png'),
+                          placeholder: (context, url) => Image.network(
+                              'https://www.nicepng.com/png/detail/777-7772737_car-placeholder-image-lamborghini-gallardo.png'),
                         ),
                         const SizedBox(width: 16),
                         Column(

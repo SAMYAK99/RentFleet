@@ -41,6 +41,7 @@ dependencies:
   firebase_auth: ^4.3.0
   cloud_firestore:
   pinput: ^2.2.12
+  cached_network_image:
 
 
 dev_dependencies:
