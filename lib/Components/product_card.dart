@@ -1,13 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ProductCard extends StatelessWidget {
+import '../provider/favourites_provider.dart';
+
+class ProductCard extends StatefulWidget {
   final String title;
   final int price;
   final String image;
   final Color backgroundColor;
   final String capacity;
   final int fuel ;
+  final Function(Map<String, Object> product)? onFavClick;
+  final  Map<String, Object> product ;
 
   const ProductCard({
     super.key,
@@ -17,15 +22,38 @@ class ProductCard extends StatelessWidget {
     required this.capacity,
     required this.fuel,
     required this.price,
+    required this.onFavClick,
+    required this.product
   });
 
   @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  @override
   Widget build(BuildContext context) {
+    bool isFavourite = false;
+    isFavourite = Provider.of<FavouritesProvider>(context, listen: false)
+        .isFavourite(widget.product);
+
+    void _toggleFavourite() {
+      if (isFavourite) {
+        Provider.of<FavouritesProvider>(context, listen: false)
+            .removeProductFromFavourite(widget.product);
+      } else {
+        widget.onFavClick!(widget.product);
+      }
+      setState(() {
+        isFavourite = !isFavourite;
+      });
+    }
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: widget.backgroundColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -38,7 +66,7 @@ class ProductCard extends StatelessWidget {
               Container(
                 width: 240,
                 child: Text(
-                  title,
+                  widget.title,
                   style: Theme
                       .of(context)
                       .textTheme
@@ -52,8 +80,14 @@ class ProductCard extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: IconButton(onPressed: () {},
-                    icon: const Icon(Icons.favorite_border ,
+                child: IconButton(onPressed: () {
+                    _toggleFavourite();
+                },
+                    icon: isFavourite ? const Icon(Icons.favorite,
+                      color: Colors.red,
+                      size: 26,
+                    ) : const Icon(Icons.favorite_border,
+                      color: Colors.grey,
                     size: 26,
                     )),
               )
@@ -61,7 +95,7 @@ class ProductCard extends StatelessWidget {
           ) ,
           Center(
             child: CachedNetworkImage(
-              imageUrl: image,
+              imageUrl: widget.image,
               fit: BoxFit.fill,
               errorWidget: (context, url, error) =>  Image.network('https://www.nicepng.com/png/detail/777-7772737_car-placeholder-image-lamborghini-gallardo.png'),
               placeholder: (context, url) => Image.network('https://www.nicepng.com/png/detail/777-7772737_car-placeholder-image-lamborghini-gallardo.png'),
@@ -84,7 +118,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      fuel.toString(),
+                      widget.fuel.toString(),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -110,7 +144,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      capacity,
+                      widget.capacity,
                       style: Theme
                           .of(context)
                           .textTheme
@@ -123,7 +157,7 @@ class ProductCard extends StatelessWidget {
                 flex: 1,
               ),
               Text(
-                "\$ $price/day",
+                "\$ ${widget.price}/day",
                 style: Theme
                     .of(context)
                     .textTheme

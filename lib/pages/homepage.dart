@@ -1,7 +1,9 @@
 import 'package:car_app/Constants/colors.dart';
 import 'package:car_app/pages/car_details_screen.dart';
+import 'package:car_app/provider/favourites_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../Components/product_card.dart';
 import '../data/car.dart';
@@ -21,15 +23,9 @@ class _HomePageState extends State<HomePage> {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // Fetch cars from Firestore database
   Future<List<Car>> fetchCars() async {
     QuerySnapshot snapshot = await _firestore.collection('cars').get();
-
-    // Print each document to debug
-    snapshot.docs.forEach((doc) {
-      print('Document ID: ${doc.id}');
-      print('Data: ${doc.data()}');
-    });
-
     return snapshot.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
       print('Mapping document: $data');
@@ -41,6 +37,19 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     selectedFilter = filters[0];
+  }
+
+  void onAddToFavouritesClick(Map<String, Object> product) {
+    Provider.of<FavouritesProvider>(context, listen: false)
+        .addProductToFavourite(product);
+    if(Provider.of<FavouritesProvider>(context, listen: false).favourites.isNotEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Added to favourites'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   @override
@@ -55,6 +64,7 @@ class _HomePageState extends State<HomePage> {
     );
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, // This removes the back button
         scrolledUnderElevation: 0,
         titleSpacing: 0,
         title: Padding(
@@ -238,6 +248,8 @@ class _HomePageState extends State<HomePage> {
                                     backgroundColor: index.isEven
                                         ? const Color.fromRGBO(216, 240, 253, 1)
                                         : const Color.fromRGBO(245, 247, 249, 1),
+                                    onFavClick: onAddToFavouritesClick, // Pass the callback here
+                                    product: product,
                                   ),
                                 );
                               },
@@ -275,6 +287,8 @@ class _HomePageState extends State<HomePage> {
                                     price: product['price'] as int,
                                     capacity: product['capacity'] as String,
                                     backgroundColor:  const Color.fromRGBO(245, 248, 248, 1) ,
+                                    onFavClick: onAddToFavouritesClick, // Pass the callback here
+                                    product: product,
                                   ),
                                 );
                               },

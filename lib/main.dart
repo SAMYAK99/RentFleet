@@ -3,7 +3,9 @@ import 'package:car_app/pages/car_details_screen.dart';
 import 'package:car_app/pages/intropage.dart';
 import 'package:car_app/pages/phone_auth.dart';
 import 'package:car_app/provider/cart_provider.dart';
+import 'package:car_app/provider/favourites_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,10 +24,14 @@ void main() async{
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CartProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+        ChangeNotifierProvider(create: (context) => FavouritesProvider()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -68,9 +74,27 @@ class MyApp extends StatelessWidget {
 
           ),
         ),
-        home: const NavigationMenu(),
+        home: CheckUser(),
         debugShowCheckedModeBanner: false,
       ),
     );
+  }
+}
+
+
+class CheckUser extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Get the currently signed-in user
+    User? user = FirebaseAuth.instance.currentUser;
+
+    // Check if the user is logged in
+    if (user != null) {
+      // The user is logged in
+      return const NavigationMenu();
+    } else {
+      // No user is logged in
+      return const PhoneAuth();
+    }
   }
 }

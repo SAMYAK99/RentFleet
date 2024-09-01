@@ -18,6 +18,8 @@ class CarDetails extends StatefulWidget {
 }
 
 class _CarDetailsState extends State<CarDetails> {
+
+
   void onAddToCartClick() {
     Provider.of<CartProvider>(context, listen: false)
         .addProduct(widget.product);
